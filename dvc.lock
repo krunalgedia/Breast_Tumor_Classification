@@ -1,0 +1,97 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/tumorClassify/pipeline/data_ingestion.py
+    deps:
+    - path: src/tumorClassify/config/config.yaml
+      hash: md5
+      md5: 1ebe60002944622daabe869bc89d20f5
+      size: 851
+    - path: src/tumorClassify/pipeline/data_ingestion.py
+      hash: md5
+      md5: b4ce3da18876add2910ff58ce318468c
+      size: 889
+    outs:
+    - path: artifacts/data_ingestion/data
+      hash: md5
+      md5: a137715af854cdadd207805b25042888.dir
+      size: 266185470
+      nfiles: 1578
+  data_validation:
+    cmd: python src/tumorClassify/pipeline/data_validation.py
+    deps:
+    - path: src/tumorClassify/config/config.yaml
+      hash: md5
+      md5: 1ebe60002944622daabe869bc89d20f5
+      size: 851
+    - path: src/tumorClassify/pipeline/data_validation.py
+      hash: md5
+      md5: ba463fae13d9384b8833cea198cb71c3
+      size: 911
+    outs:
+    - path: artifacts/data_validation
+      hash: md5
+      md5: 0ccb3ea5849272ff03be5ab71786b9ff.dir
+      size: 23
+      nfiles: 1
+  training_and_validation:
+    cmd: python src/tumorClassify/pipeline/data_training_validation.py
+    deps:
+    - path: artifacts/data_ingestion/data
+      hash: md5
+      md5: a137715af854cdadd207805b25042888.dir
+      size: 266185470
+      nfiles: 1578
+    - path: artifacts/data_validation/
+      hash: md5
+      md5: 0ccb3ea5849272ff03be5ab71786b9ff.dir
+      size: 23
+      nfiles: 1
+    - path: params.yaml
+      hash: md5
+      md5: e804d8b42067ef3f9fdccf3cac9a86b2
+      size: 1195
+    - path: src/tumorClassify/config/config.py
+      hash: md5
+      md5: 684d4ed8bf8a9edffbb565ddfdf134d2
+      size: 2227
+    - path: src/tumorClassify/config/config.yaml
+      hash: md5
+      md5: 1ebe60002944622daabe869bc89d20f5
+      size: 851
+    - path: src/tumorClassify/pipeline/data_training_validation.py
+      hash: md5
+      md5: 3e81d0ee2d45a504d2a13b8e0b9f7b1f
+      size: 1502
+    - path: src/tumorClassify/utils/common.py
+      hash: md5
+      md5: 23b7126d96dad15189dc680c38bfee50
+      size: 3351
+    params:
+      params.yaml:
+        AUTOTUNE: tf.data.AUTOTUNE
+        BATCH_SIZE: 64
+        DEPTH: 3
+        DPOUT_UNITS:
+        - 0.3
+        - 0.2
+        - 0.1
+        HEIGHT: 224
+        LINEAR_UNITS:
+        - 256
+        - 64
+        - 32
+        LR: 0.001
+        MODEL: EfficientNetV2S
+        NUM_EPOCHS: 1
+        POOLING: max
+        SEED: 24
+        SHUFFLE: true
+        SIZE: 224
+        TEST_SIZE: 0.2
+        WIDTH: 224
+    outs:
+    - path: artifacts/models/model.h5
+      hash: md5
+      md5: 622f7512e1f0baecd4978c5fbb69bd80
+      size: 83305320

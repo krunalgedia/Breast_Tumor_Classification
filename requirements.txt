@@ -1,0 +1,17 @@
+tensorflow==2.15.0
+streamlit==1.28.2
+loguru
+notebook
+python-box==6.0.2
+ensure==1.0.2
+tqdm
+vit_keras
+opencv-python
+tensorflow_addons
+scikit-learn
+mlflow
+dagshub
+python-dotenv
+pyyaml
+dvc
+-e .

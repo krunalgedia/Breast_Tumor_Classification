@@ -1,0 +1,40 @@
+# Define parameters at the root level using YAML anchors
+SEED       : &SEED_VAL 24
+AUTOTUNE   : &AUTOTUNE_VAL tf.data.AUTOTUNE
+DEPTH      : &DEPTH_VAL 3
+HEIGHT     : &HEIGHT_VAL 224
+WIDTH      : &WIDTH_VAL 224
+SIZE       : &SIZE_VAL 224
+BATCH_SIZE : &BATCH_SIZE_VAL 64
+TEST_SIZE  : &TEST_SIZE_VAL 0.2
+SHUFFLE    : &SHUFFLE_VAL True
+MODEL      : &MODEL_VAL 'EfficientNetV2S'
+LR         : &LR_VAL 0.001
+NUM_EPOCHS : &NUM_EPOCHS_VAL 1
+POOLING    : &POOLING_VAL 'max'
+LINEAR_UNITS: &LINEAR_UNITS_VAL [256, 64, 32]
+DPOUT_UNITS : &DPOUT_UNITS_VAL [0.3, 0.2, 0.1]
+
+# Organize parameters in their respective sections
+image_params:
+  HEIGHT     : *HEIGHT_VAL
+  WIDTH      : *WIDTH_VAL
+  DEPTH      : *DEPTH_VAL
+  SIZE       : *SIZE_VAL
+
+batch_params:
+  BATCH_SIZE : *BATCH_SIZE_VAL
+  TEST_SIZE  : *TEST_SIZE_VAL
+  SHUFFLE    : *SHUFFLE_VAL
+  AUTOTUNE   : *AUTOTUNE_VAL
+  SEED       : *SEED_VAL
+
+model_params:
+  MODEL      : *MODEL_VAL
+  LR         : *LR_VAL
+  NUM_EPOCHS : *NUM_EPOCHS_VAL
+  POOLING    : *POOLING_VAL
+  LINEAR_UNITS: *LINEAR_UNITS_VAL
+  DPOUT_UNITS : *DPOUT_UNITS_VAL
+
+# [ResNet152V2, VGG19, EfficientNetB7, EfficientNetV2S, ConvNeXtBase, vit_b16]

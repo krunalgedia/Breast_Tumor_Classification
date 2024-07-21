@@ -1,0 +1,47 @@
+stages:
+  data_ingestion:
+    cmd: python src/tumorClassify/pipeline/data_ingestion.py
+    deps:
+      - src/tumorClassify/pipeline/data_ingestion.py
+      - src/tumorClassify/config/config.yaml
+    outs:
+      - artifacts/data_ingestion/data
+
+
+  data_validation:
+    cmd: python src/tumorClassify/pipeline/data_validation.py
+    deps:
+      - src/tumorClassify/pipeline/data_validation.py
+      - src/tumorClassify/config/config.yaml
+    outs:
+      - artifacts/data_validation
+
+
+  training_and_validation:
+    cmd: python src/tumorClassify/pipeline/data_training_validation.py
+    deps:
+      - src/tumorClassify/pipeline/data_training_validation.py
+      - src/tumorClassify/utils/common.py
+      - src/tumorClassify/config/config.yaml
+      - params.yaml
+      - src/tumorClassify/config/config.py
+      - artifacts/data_ingestion/data
+      - artifacts/data_validation/
+    params:
+      - HEIGHT
+      - WIDTH
+      - DEPTH
+      - SIZE
+      - BATCH_SIZE
+      - TEST_SIZE
+      - SHUFFLE
+      - AUTOTUNE
+      - SEED
+      - MODEL
+      - LR
+      - NUM_EPOCHS
+      - POOLING
+      - LINEAR_UNITS
+      - DPOUT_UNITS
+    outs:
+      - artifacts/models/model.h5

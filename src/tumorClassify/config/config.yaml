@@ -1,0 +1,24 @@
+artifacts_root: artifacts
+
+data_ingestion:
+  root_dir: artifacts/data_ingestion
+  source_URL: https://scholar.cu.edu.eg/Dataset_BUSI.zip
+  local_data_file: artifacts/data_ingestion/data.zip
+  unzip_dir: artifacts/data_ingestion
+
+data_validation:
+  root_dir: artifacts/data_validation
+  STATUS_FILE: artifacts/data_validation/status.txt
+  ALL_REQUIRED_FILES: ["benign", "malignant", "normal"]
+  unzip_dir: artifacts/data_ingestion/data
+
+data_training_validation:
+  root_dir: artifacts/data_training_validation
+  STATUS_FILE: artifacts/data_training_validation/status.txt
+  unzip_dir: artifacts/data_ingestion/data
+  benign_dir: artifacts/data_ingestion/data/benign
+  malignant_dir: artifacts/data_ingestion/data/malignant
+  normal_dir: artifacts/data_ingestion/data/normal
+  benign: benign
+  malignant: malignant
+  normal: normal
