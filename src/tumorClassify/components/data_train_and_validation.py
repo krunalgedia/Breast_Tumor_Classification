@@ -155,6 +155,7 @@ class TrainValEval:
         return x
 
     def prepare_model(self):
+
         POOLING = self.param.model_params.POOLING
 
         # Input layer
@@ -237,6 +238,7 @@ class TrainValEval:
         # Functional model
         self.fine_tune_model = tf.keras.Model(inputs=input_layer, outputs=output_layer)
         self.fine_tune_model.layers[1].trainable=False
+        #print(self.fine_tune_model.summary())
         #self.pretrained_model.trainable=False
 
     def train_model(self):
