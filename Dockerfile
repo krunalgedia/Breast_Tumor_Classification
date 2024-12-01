@@ -25,7 +25,7 @@ ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
 ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 ENV AWS_REGION=${AWS_REGION}
 
-RUN aws s3 cp s3://cancerapp-203918887737/model.h5 /app/artifacts/models/model/model.h5
+RUN aws s3 cp s3://cancerapp-203918887737/model.h5 /app/artifacts/models/model.h5
 
 EXPOSE 8501
 #EXPOSE 8080
