@@ -139,6 +139,7 @@ def test_train_model(mock_fit, mock_register_model, mock_log_model, mock_log_met
 
             # Verify that the metrics and model registration were logged
             mock_log_metric.assert_called()  # Check if metrics were logged
-            mock_log_model.assert_called_once_with(train_val_eval.fine_tune_model, "model")
+            # Currently disabled logging in mlflow since old tf evrsion had bug
+            #mock_log_model.assert_called_once_with(train_val_eval.fine_tune_model, "model")
             mock_register_model.assert_called_once()
 
