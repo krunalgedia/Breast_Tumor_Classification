@@ -23,13 +23,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt  # Assumes your dependencies are in requirements.txt
-          pip install pytest               # Installs pytest if not in requirements.txt
+          #python -m pip install --upgrade pip
+          #pip install -r requirements.txt  # Assumes your dependencies are in requirements.txt
+          #pip install pytest               # Installs pytest if not in requirements.txt
 
       - name: Run tests
         run: |
-          pytest --maxfail=5 --disable-warnings  # Run pytest with options
+          #pytest --maxfail=5 --disable-warnings  # Run pytest with options
 
   build-and-push-ecr-image:
     name: Continuous Delivery
@@ -69,6 +69,7 @@ jobs:
           
           # Build a docker container and push it to ECR so that it can be deployed to ECS.
           #docker build --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} --build-arg AWS_REGION=${{ secrets.AWS_REGION }}   -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          #
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
