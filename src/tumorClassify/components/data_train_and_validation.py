@@ -17,7 +17,7 @@ from tensorflow.keras.mixed_precision import set_global_policy
 load_dotenv()  # This loads the environment variables from the .env file
 
 class TrainValEval:
-    def __init__(self, config, param):
+
     def __init__(self, config, param):
         self.config = config
         self.param = param
