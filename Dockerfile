@@ -14,9 +14,9 @@ COPY . /app
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-#ARG AWS_ACCESS_KEY_ID
-#ARG AWS_SECRET_ACCESS_KEY
-#ARG AWS_DEFAULT_REGION
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+ARG AWS_DEFAULT_REGION
 
 RUN aws s3 cp s3://cancerapp-203918887737/model.h5 /app/artifacts/models/model/model.h5
 
