@@ -23,13 +23,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          #python -m pip install --upgrade pip
-          #pip install -r requirements.txt  # Assumes your dependencies are in requirements.txt
-          #pip install pytest               # Installs pytest if not in requirements.txt
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt  # Assumes your dependencies are in requirements.txt
+          pip install pytest               # Installs pytest if not in requirements.txt
 
       - name: Run tests
         run: |
-          #pytest --maxfail=5 --disable-warnings  # Run pytest with options
+          pytest --maxfail=5 --disable-warnings  # Run pytest with options
 
   build-and-push-ecr-image:
     name: Continuous Delivery
