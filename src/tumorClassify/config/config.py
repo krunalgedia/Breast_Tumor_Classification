@@ -46,7 +46,7 @@ class ConfigurationManager:
 
     def get_data_training_validation_config(self) -> DataTrainingValidationConfig:
         config = self.config.data_training_validation
-        print(config)
+        #print(config)
 
         create_directories([config.root_dir])
 
@@ -57,6 +57,7 @@ class ConfigurationManager:
             benign_dir=config.benign_dir,
             malignant_dir=config.malignant_dir,
             normal_dir=config.normal_dir,
+            mlflow_dir=config.mlflow_dir,
             benign=config.benign,
             normal=config.normal,
             malignant=config.malignant,

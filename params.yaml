@@ -5,15 +5,16 @@ DEPTH      : &DEPTH_VAL 3
 HEIGHT     : &HEIGHT_VAL 224
 WIDTH      : &WIDTH_VAL 224
 SIZE       : &SIZE_VAL 224
-BATCH_SIZE : &BATCH_SIZE_VAL 64
+BATCH_SIZE : &BATCH_SIZE_VAL 16
 TEST_SIZE  : &TEST_SIZE_VAL 0.2
 SHUFFLE    : &SHUFFLE_VAL True
-MODEL      : &MODEL_VAL 'EfficientNetV2S'
+MODEL      : &MODEL_VAL 'EfficientNetB7'
 LR         : &LR_VAL 0.001
 NUM_EPOCHS : &NUM_EPOCHS_VAL 1
 POOLING    : &POOLING_VAL 'max'
 LINEAR_UNITS: &LINEAR_UNITS_VAL [256, 64, 32]
 DPOUT_UNITS : &DPOUT_UNITS_VAL [0.3, 0.2, 0.1]
+GRADCAM_LAYER: &GRADCAM_LAYER 'top_activation'
 
 # Organize parameters in their respective sections
 image_params:
@@ -36,5 +37,8 @@ model_params:
   POOLING    : *POOLING_VAL
   LINEAR_UNITS: *LINEAR_UNITS_VAL
   DPOUT_UNITS : *DPOUT_UNITS_VAL
+  GRADCAM_LAYER: *GRADCAM_LAYER
+
+
 
 # [ResNet152V2, VGG19, EfficientNetB7, EfficientNetV2S, ConvNeXtBase, vit_b16]

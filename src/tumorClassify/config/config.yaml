@@ -19,6 +19,7 @@ data_training_validation:
   benign_dir: artifacts/data_ingestion/data/benign
   malignant_dir: artifacts/data_ingestion/data/malignant
   normal_dir: artifacts/data_ingestion/data/normal
+  mlflow_dir: mlruns
   benign: benign
   malignant: malignant
   normal: normal

@@ -63,4 +63,5 @@ class DataIngestion:
                 logger.error(f"Extracted folder '{extracted_folder_name}' does not exist in the specified path")
 
         except Exception as e:
+            unzip_path = self.config.unzip_dir
             logger.error(f'Failed to unzip {self.config.local_data_file} at {unzip_path}: {e}')

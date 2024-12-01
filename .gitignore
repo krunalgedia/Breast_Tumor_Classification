@@ -12,6 +12,7 @@ mlruns/
 
 # data
 artifacts/data_ingestion/
+artifacts/models/model/*
 
 # Distribution / packaging
 .Python

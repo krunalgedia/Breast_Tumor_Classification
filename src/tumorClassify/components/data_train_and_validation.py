@@ -12,10 +12,12 @@ import dagshub
 from urllib.parse import urlparse
 from pathlib import Path
 from dotenv import load_dotenv
+from tensorflow.keras.mixed_precision import set_global_policy
 
 load_dotenv()  # This loads the environment variables from the .env file
 
 class TrainValEval:
+    def __init__(self, config, param):
     def __init__(self, config, param):
         self.config = config
         self.param = param
@@ -25,8 +27,33 @@ class TrainValEval:
         self.depth = self.param.image_params.DEPTH
         self.model = self.param.model_params.MODEL
 
-    def load_image(self, path):
-        image = cv2.imread(path)
+        #print(self.config)
+
+    def set_gpu(self):
+        # Enable GPU memory growth to avoid OOM errors
+        gpus = tf.config.experimental.list_physical_devices('GPU')
+        if gpus:
+            for gpu in gpus:
+                try:
+                    tf.config.experimental.set_memory_growth(gpu, True)
+                except RuntimeError as e:
+                    print(f"Error enabling memory growth: {e}")
+
+        # Enable mixed precision training
+        #set_global_policy('mixed_float16')
+
+    def load_image(self, path, upload=False):
+        if upload:
+            # Convert the file to an opencv image.
+            image = np.asarray(bytearray(path.read()), dtype=np.uint8)
+            image = cv2.imdecode(image, 1)
+            # image = PIL.Image.open(path)
+            # image = np.array(path)
+            # print(type(image))
+            # print(image.shape)
+        else:
+            image = cv2.imread(path)
+        #image = cv2.imread(path)
         image = cv2.resize(image, (self.size, self.size))
         if self.model=='ResNet152V2':
           image = tf.keras.applications.resnet_v2.preprocess_input(image)
@@ -267,8 +294,8 @@ class TrainValEval:
             verbose=1,
             save_best_only=True,
             mode='min',
-            save_weights_only=True,
-            save_freq='epoch'
+            #save_weights_only=True,
+            save_freq='epoch',
         )
 
         reduce_lr = ReduceLROnPlateau(
@@ -280,12 +307,14 @@ class TrainValEval:
 
         callbacks_list = [checkpoint, reduce_lr]
 
-        #dagshub.init(repo_owner='krunalgedia', repo_name='Breast_Tumor_Classification', mlflow=True)
-        mlflow.set_registry_uri('https://dagshub.com/krunalgedia/Breast_Tumor_Classification.mlflow')
-        tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
+        ##dagshub.init(repo_owner='krunalgedia', repo_name='Breast_Tumor_Classification', mlflow=True)
+        #mlflow.set_registry_uri('https://dagshub.com/krunalgedia/Breast_Tumor_Classification.mlflow')
+        #tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
+
+        mlflow.set_tracking_uri(self.config.data_training_validation.mlflow_dir)  # Local directory for MLflow runs
 
         # Start an MLflow run
-        with mlflow.start_run() as run:
+        with mlflow.start_run(run_name=self.model) as run:
             # Log parameters
             mlflow.log_params(self.param.batch_params)
             mlflow.log_params(self.param.model_params)
@@ -303,18 +332,45 @@ class TrainValEval:
                 epochs=self.param.model_params.NUM_EPOCHS,
                 class_weight=self.class_weight
             )
-
+            #self.fine_tune_model.save('Detection_model', save_format='h5')
             #print(history.history)
             # Optionally, you can log additional metrics manually
             # Log metrics for each epoch
+            #metrics = history.history.keys()
+            #for epoch in range(len(history.history[list(metrics)[0]])):
+            #    for metric in metrics:
+            #        mlflow.log_metric(metric, history.history[metric][epoch], step=epoch)
+
+            # Log metrics (manually handle EagerTensor conversion)
             metrics = history.history.keys()
             for epoch in range(len(history.history[list(metrics)[0]])):
                 for metric in metrics:
-                    mlflow.log_metric(metric, history.history[metric][epoch], step=epoch)
+                    value = history.history[metric][epoch]
+                    if isinstance(value, tf.Tensor):
+                        value = value.numpy()  # Convert to Python float
+                    mlflow.log_metric(metric, value, step=epoch)
+
+            print("Inspecting model attributes for serialization issues:")
+            for attr in dir(self.fine_tune_model):
+                try:
+                    value = getattr(self.fine_tune_model, attr)
+                    if isinstance(value, tf.Tensor):
+                        print(f"Attribute '{attr}' contains an EagerTensor with value: {value.numpy()}")
+                    elif isinstance(value, list):
+                        if any(isinstance(item, tf.Tensor) for item in value):
+                            print(f"Attribute '{attr}' contains a list with EagerTensor.")
+                except Exception as e:
+                    print(f"Error inspecting attribute '{attr}': {e}")
+
+            if hasattr(self.fine_tune_model, 'problematic_attribute'):
+                value = getattr(self.fine_tune_model, 'problematic_attribute')
+                if isinstance(value, tf.Tensor):
+                    setattr(self.fine_tune_model, 'problematic_attribute', value.numpy().tolist())
 
             # Register the model
             run_id = run.info.run_id  # Access the run ID
-            mlflow.tensorflow.log_model(self.fine_tune_model, "model")
+
+            #mlflow.tensorflow.log_model(self.fine_tune_model, "model")
 
             # Model registry does not work with file store
             #print(tracking_url_type_store)

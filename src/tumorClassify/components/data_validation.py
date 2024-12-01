@@ -8,7 +8,7 @@ class DataValidation:
     def __init__(self, config: DataValidationConfig):
         self.config = config
 
-    def validate_all_files_exist(self )-> bool:
+    def validate_all_files_exist(self) -> bool:
         try:
             validation_status = None
 
@@ -16,7 +16,7 @@ class DataValidation:
 
             for file in all_files:
                 file_size = get_size(Path(os.path.join("artifacts" ,"data_ingestion" ,"data", file)))
-                if (file_size == 0):
+                if file_size == 0:
                     logger.error(f"File is empty: {file}")
                 # else:
                 #    logger.info(f"File: {file} has size: {file_size}")

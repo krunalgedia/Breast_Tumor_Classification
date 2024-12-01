@@ -1,0 +1,21 @@
+# Ignore a specific directory
+artifacts/data_*
+artifacts/mlruns
+artifacts/models/*
+mlruns
+logs/*
+
+# Ignore specific file
+#config/local_config.yml
+
+# Ignore Dockerfile
+Dockerfile
+
+# Ignore .dockerignore
+.dockerignore
+
+# Ignore Git and Git-related files
+.git
+.gitignore
+*lock
+*ignore

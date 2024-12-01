@@ -22,6 +22,7 @@ class DataTrainingValidationConfig:
     benign_dir: str
     malignant_dir: str
     normal_dir: str
+    mlflow_dir: str
     benign: str
     normal: str
     malignant: str

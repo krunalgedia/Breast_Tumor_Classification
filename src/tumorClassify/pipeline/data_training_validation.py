@@ -12,7 +12,7 @@ class DataTrainValidationPipeline:
         data_training_validation_config = config.get_data_training_validation_config()
 
         trainValEval = TrainValEval(config.config, config.params)
-
+        trainValEval.set_gpu()
         x_benign, y_benign, y_benign_label = trainValEval.load_data(data_training_validation_config.benign)
         x_malignant, y_malignant, y_malignant_label = trainValEval.load_data(data_training_validation_config.malignant)
         x_normal, y_normal, y_normal_label = trainValEval.load_data(data_training_validation_config.normal)

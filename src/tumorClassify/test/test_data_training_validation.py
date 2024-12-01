@@ -117,8 +117,8 @@ def test_train_model(mock_fit, mock_register_model, mock_log_model, mock_log_met
 
     # Run the train_model method with mocked callbacks
     with patch('tumorClassify.components.data_train_and_validation.ModelCheckpoint', return_value=MagicMock()) as mock_checkpoint, \
-        patch('tumorClassify.components.data_train_and_validation.ReduceLROnPlateau', return_value=MagicMock()) as mock_reduce_lr, \
-        patch.object(Path, 'mkdir') as mock_mkdir:
+         patch('tumorClassify.components.data_train_and_validation.ReduceLROnPlateau', return_value=MagicMock()) as mock_reduce_lr, \
+         patch.object(Path, 'mkdir') as mock_mkdir:
 
         # Patch Path to use the temporary directory
         with patch.object(Path, 'resolve', return_value=temp_checkpoint_dir):

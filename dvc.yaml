@@ -7,7 +7,6 @@ stages:
     outs:
       - artifacts/data_ingestion/data
 
-
   data_validation:
     cmd: python src/tumorClassify/pipeline/data_validation.py
     deps:
@@ -15,7 +14,6 @@ stages:
       - src/tumorClassify/config/config.yaml
     outs:
       - artifacts/data_validation
-
 
   training_and_validation:
     cmd: python src/tumorClassify/pipeline/data_training_validation.py
