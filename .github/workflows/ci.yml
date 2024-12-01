@@ -105,7 +105,7 @@ jobs:
 
        - name: Stop and remove container if running
          run: |
-          docker ps -q --filter "name=texts" | grep -q . && docker stop texts && docker rm -fv texts
+          docker ps -q --filter "name=CancerDetection" | grep -q . && docker stop CancerDetection && docker rm -fv CancerDetection
 
       - name: Run Docker Image to serve users
         run: |
